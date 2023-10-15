@@ -1,5 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from './_services/account.service';
+import { User } from './_models/user';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,19 +13,26 @@ export class AppComponent implements OnInit{
   /**
    *
    */
-  constructor(private http:HttpClient) {
+  constructor(private accountService:AccountService) {
 
 
   }
-  title="alaa";
+  
+  title="Communctaion App";
   baseUrl="https://localhost:44362/api/"
-  users:any;
   ngOnInit(): void {
-    this.http.get(this.baseUrl+'User').subscribe({
-      next:response=> this.users=response,
-      error :(err)=> console.log ("Error", err),complete :()=>{}
-    });
+    this.setCurrentUser();
     
+  }
+  
+  
+  setCurrentUser(){
+    const userString =localStorage.getItem('user');
+    if(!userString){
+      return;
+    }
+    const user:User=JSON.parse(userString);
+    this.accountService.setCurrentUser(user);
   }
   
  

@@ -1,39 +1,126 @@
 
 
+
+
+
+
+using API.Data.SeedData;
+using API.Middleware;
+
 namespace API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+           
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v2", new OpenApiInfo { Title = "My Demo", Version = "v2" }));
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Demo", Version = "v1" });
+
+                // Configure Swagger to use JWT Bearer authentication
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                });
+
+                // If you need to include XML comments in Swagger
+                // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                // c.IncludeXmlComments(xmlPath);
+            });
             builder.Services.AddCors();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
-            var app = builder.Build();
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.SaveToken = true;
+                option.RequireHttpsMetadata = false; // make true if you need Https
+                option.TokenValidationParameters = new TokenValidationParameters()
+                {
 
-            // Configure the HTTP request pipeline.
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    ValidateAudience = true,
+                    ValidAudience= builder.Configuration["JWT:ValidAduiance"],
+                    IssuerSigningKey =
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+                    
+                    
+                    
+                   
+                };
+            });
+            var app = builder.Build();
+            if (builder.Environment.IsDevelopment())
+            { 
+                app.UseDeveloperExceptionPage();
+            }
+        // Configure the HTTP request pipeline.
+        app.UseMiddleware<ExceptionMiddleware>();
             if (app.Environment.IsDevelopment())
             {
+               
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
             app.MapControllers();
+            using var scope = app.Services.CreateScope();
+            var Services = scope.ServiceProvider;
+            var context = Services.GetRequiredService<AppDbContext>();
+            var Logger = Services.GetRequiredService<ILogger<Program>>();
+            try
+            {
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(context);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error occur while proccess");
+            }
 
             app.Run();
         }
