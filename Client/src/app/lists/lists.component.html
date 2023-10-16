@@ -1,1 +1,5 @@
-<button (click)="getMembers()">Get member</button>
+<div class="row">
+    <div class="col-2">
+        <p *ngFor="let member of Members">{{member.KnownAs}}</p>
+    </div>
+</div>

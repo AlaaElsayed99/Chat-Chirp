@@ -10,7 +10,7 @@ export class MemberService {
  baseUrl=environment.baseUrl;
   constructor(private http:HttpClient) { }
   getMembers(){
-    return this.http.get<Member[]>(this.baseUrl+"user");
+    return this.http.get<Member[]>(this.baseUrl+"user",this.getMemberOptions());
   }
 
 getMember(userName:string){
