@@ -1,10 +1,43 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { Member } from 'src/app/_models/member';
+import { MemberService } from 'src/app/_services/member.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-member-details',
   templateUrl: './member-details.component.html',
-  styleUrls: ['./member-details.component.css']
+  styleUrls: ['./member-details.component.css'],
+  standalone:true,
+  imports:[CommonModule,TabsModule,GalleryModule]
 })
-export class MemberDetailsComponent {
-
+export class MemberDetailsComponent implements OnInit {
+  url="https://localhost:44362/"
+   member: Member|undefined;
+   images:GalleryItem[]=[];
+  constructor(private memberService:MemberService, private route:ActivatedRoute) {
+    
+  }
+  ngOnInit(): void {
+    this.loadMember();
+  }
+loadMember(){
+  const username=this.route.snapshot.paramMap.get('username');
+  if(!username) return;
+  this.memberService.getMember(username).subscribe({
+    next:member =>{ this.member = member,
+      this.getImages()
+    
+    },
+  })
+}
+getImages(){
+  if(!this.member) return;
+  for(const photo of this.member?.photos){
+    this.images.push(new ImageItem({src:this.url+photo.url,thumb:this.url+photo.url}))
+  }
+}
 }

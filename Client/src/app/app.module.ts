@@ -20,6 +20,9 @@ import { TestsErrorComponent } from './error/tests-error/tests-error.component';
 import { ErrorInterceptor } from './_interceptor/error.interceptor';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { ServerErrorComponent } from './error/server-error/server-error.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtInterceptor } from './_interceptor/jwt.interceptor';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
 @NgModule({
@@ -29,12 +32,12 @@ import { ServerErrorComponent } from './error/server-error/server-error.componen
     HomeComponent,
     RegisterComponent,
     MemberListComponent,
-    MemberDetailsComponent,
     ListsComponent,
     MessagesComponent,
     TestsErrorComponent,
     NotFoundComponent,
-    ServerErrorComponent
+    ServerErrorComponent,
+    MemberCardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,10 +45,13 @@ import { ServerErrorComponent } from './error/server-error/server-error.componen
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    TabsModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
+    {provide: HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
+
     provideToastr({
       timeOut: 6000,
       positionClass: 'toast-bottom-right',

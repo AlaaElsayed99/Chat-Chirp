@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
 
@@ -11,6 +12,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   imports: [
     CommonModule,
     BsDropdownModule,
+    TabsModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',
@@ -23,6 +25,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   exports:[
     BsDropdownModule,
     ToastrModule,
+    TabsModule
     // NgxSpinnerModule
   ]
 })
