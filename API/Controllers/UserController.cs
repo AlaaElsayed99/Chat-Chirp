@@ -1,5 +1,7 @@
 ﻿
 
+using System.Security.Claims;
+
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -21,9 +23,12 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAsync()
         {
             var Users = await _userRepository.GetAllUserAsync();
+            
             return Ok(Users);
 
+            
         }
+
         //[HttpGet("{id}")]
         //public async Task<ActionResult<AppUserDTO>> GetByIdAsync(int id)
         //{
@@ -46,8 +51,26 @@ namespace API.Controllers
                 return NotFound();
             }
             
+         
             return Ok(User);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUserAsync(MemberUpdateDTO memberUpdateDTO)
+        {
+            var username= User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user =await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null) { return NotFound("user not Found"); }
+            
+                _mapper.Map(memberUpdateDTO, user);
+                if(await _userRepository.SaveAllAsync()) return NoContent();
+            
+                return BadRequest("Faild to update");    
+
+
+
+        }
+
 
     }
 }

@@ -1,9 +1,4 @@
 
-
-
-
-
-
 using API.Data.SeedData;
 using API.Middleware;
 
@@ -12,8 +7,7 @@ namespace API
     public class Program
     {
         public static async Task Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        {            var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
            
@@ -92,7 +86,7 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
         // Configure the HTTP request pipeline.
-        app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                

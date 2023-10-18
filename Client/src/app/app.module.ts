@@ -23,6 +23,8 @@ import { ServerErrorComponent } from './error/server-error/server-error.componen
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptor/jwt.interceptor';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { LoadingInterceptor } from './_interceptor/loading.interceptor';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     TestsErrorComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    MemberCardComponent
+    MemberCardComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
   providers: [
     {provide: HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
     {provide: HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
+    {provide: HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true},
+
 
     provideToastr({
       timeOut: 6000,

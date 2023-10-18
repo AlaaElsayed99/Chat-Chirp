@@ -42,9 +42,9 @@ namespace API.Data.Repository
             return await _context.AppUsers.Include(s => s.Photos).SingleOrDefaultAsync(s => s.UserName == name);
         }
 
-        public void SaveAllAsync()
+        public async Task<bool> SaveAllAsync()
         {
-           _context.SaveChangesAsync();
+          return  await _context.SaveChangesAsync()>0;
         }
 
         public void Update(AppUser user)

@@ -18,15 +18,17 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),
-    NgxSpinnerModule,
+    NgxSpinnerModule.forRoot({
+      type:'square-jelly-box'
+}),
 
   ],
 
   exports:[
     BsDropdownModule,
     ToastrModule,
-    TabsModule
-    // NgxSpinnerModule
+    TabsModule,
+    NgxSpinnerModule
   ]
 })
 export class SharedModule { }
