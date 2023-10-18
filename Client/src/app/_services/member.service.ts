@@ -11,28 +11,21 @@ export class MemberService {
  baseUrl=environment.baseUrl;
  members:Member[]=[];
   constructor(private http:HttpClient) { }
-  getMembers(){
-    if(this.members.length>0) return of (this.members);
-    return this.http.get<Member[]>(this.baseUrl+"user").pipe(
-      map(members=>{
-        this.members=members;
-        return members;
-      })
-    );
+getMembers(){
+    return this.http.get<Member[]>(this.baseUrl+"user");
   }
 
-getMember(username:string){
-  const member =this.members.find(x=>x.userName==username);
-  if(member) return of(member);
-  return this.http.get<Member>(this.baseUrl+"user/"+username);
+getMember(userName:string){
+  return this.http.get<Member[]>(this.baseUrl+"user/"+userName,this.getMemberOptions());
 }
-updateMember(member:Member){
-  return this.http.put(this.baseUrl+"user/",member).pipe(
-    map(()=>{
-      const index=this.members.indexOf(member);
-      this.members[index]={...this.members[index],...member}
-    })
-  );
-}
-  
+getMemberOptions(){
+    const userString=localStorage.getItem('user');
+    if(!userString) return;
+    const user=JSON.parse(userString);
+    return {
+      headers:new HttpHeaders({
+        Authorization: 'Bearer '+user.token
+      })
+    }
+  }
 }

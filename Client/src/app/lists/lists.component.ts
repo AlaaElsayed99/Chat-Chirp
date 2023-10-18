@@ -8,7 +8,9 @@ import { Member } from '../_models/member';
   styleUrls: ['./lists.component.css']
 })
 export class ListsComponent implements OnInit{
-  Members:Member[]=[];
+  /**
+   *
+   */
   constructor(private memberSrvice:MemberService) {
     
   }
