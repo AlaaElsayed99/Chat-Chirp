@@ -1,23 +1,71 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+<form [formGroup]="registerForm" (ngSubmit)="registerForm.valid&& register()" autocomplete="off">
     <h2 class="text-center text-primary">Sign up</h2>
     <hr>
-    <div class="mb-3">
-        <input type="text" class="form-control"
-         name="username"
-         [(ngModel)]="model.username"
+
+    <!-- Before making the reusable Form  -->
+    <!-- <div class="mb-3">
+        <input type="text"
+        [class.is-invalid]="registerForm.get('username')?.errors&&registerForm.get('username')?.touched"
+        class="form-control"
+        formControlName="username"
          placeholder="Username"
          >
+         <div class="invalid-feedback">please enter username</div>
     </div>
     
+    
     <div class="mb-3">
-        <input type="password" class="form-control"
-         name="password"
-         [(ngModel)]="model.password"
-         placeholder="Password"
+        <input type="password"
+        [class.is-invalid]="registerForm.get('password')?.errors&&registerForm.get('password')?.touched"
+        class="form-control"
+        placeholder="Password"
+         formControlName="password"
          >
+         <div class="invalid-feedback"  *ngIf="registerForm.get('password')?.hasError('required')">please enter Password</div>
+         <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('minlength')">min length is 4</div>
+         <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('maxlength')">Max length is 12</div>
+        
+    </div>
+    <div class="mb-3">
+        <input
+        [class.is-invalid]="registerForm.get('confirmPassword')?.errors&&registerForm.get('confirmPassword')?.touched"
+        type="password" class="form-control"
+        formControlName="confirmPassword"
+         placeholder="Confirm Password"
+         >
+         <div class="invalid-feedback"  *ngIf="registerForm.get('confirmPassword')?.hasError('required')">please Confirm Password</div>
+         <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.hasError('notMatching')">confirm Password must matching</div>
+         
+    </div> -->
+    
+    <app-text-input [formControl]="$any(registerForm.controls['username'])" [label]="'Username'"></app-text-input>
+    <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [label]="'KnownAs'"></app-text-input>
+    <app-datapicker [formControl]="$any(registerForm.controls['dateOfBirth'])" [maxDate]="maxDate"  [label]="'Date Of Birth'"></app-datapicker>
+    <app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'"></app-text-input>
+    <app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
+    <div class="mb-3">
+        <label style="margin-right: 10px;">I'm a: </label>
+        <label class="form-check-label me-3">
+            <input type="radio" class="form-check-input " value="male" formControlName="gender" > Male
+        </label>
+        <label class="form-check-label ">
+            <input type="radio" class="form-check-input ms-3" value="female" formControlName="gender"> Female
+        </label>
+    </div>
+    <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'"></app-text-input>
+    <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'ConfirmPassword'" [type]="'password'" ></app-text-input>
+
+    <div class="row" *ngIf="valaidationError">
+        <ul class="text-danger">
+            <li *ngFor="let errors of valaidationError">
+                {{errors}}
+            </li>
+        </ul>
     </div>
     <div class="text-center">
-        <button class="btn btn-success me-3" type="submit">Sign up</button>
+        <button [disabled]="!registerForm.valid" class="btn btn-success me-3" type="submit">Sign up</button>
         <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
     </div>
 </form>
+<!-- <p >Form Value: {{registerForm.value| json}}</p>
+<p >Form status: {{registerForm.status| json}}</p> -->

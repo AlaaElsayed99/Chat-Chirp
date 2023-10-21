@@ -1,5 +1,6 @@
 
 using API.Data.SeedData;
+using API.Helper;
 using API.Middleware;
 
 namespace API
@@ -7,10 +8,11 @@ namespace API
     public class Program
     {
         public static async Task Main(string[] args)
-        {            var builder = WebApplication.CreateBuilder(args);
-
+        {            
+            var builder = WebApplication.CreateBuilder(args);
+            
             // Add services to the container.
-           
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -50,7 +52,10 @@ namespace API
             builder.Services.AddCors();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
             builder.Services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));

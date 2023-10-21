@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Member } from 'src/app/_models/member';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
@@ -19,7 +19,8 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue=true;
     }
   }
-  member:Member|undefined;
+  member:Member
+   |undefined
   user:User|null=null;
   constructor(private accountService:AccountService,private memberService:MemberService ,private toastr:ToastrService) {
    this.accountService.currnetUser$.pipe(take(1)).subscribe({

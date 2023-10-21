@@ -2,7 +2,7 @@
     <div class="row" *ngIf="member">
         <div class="col-md-4">
             <div class="card">
-                <img src="https://localhost:44362/{{member.photoUrl || 'assets/user.png'}}"
+                <img src="{{member.photoUrl || 'assets/user.png'}}"
                      class="card-img-top img-thumbnail" alt="{{member.knownAs}}" style="height: 300px;">
                 <div class="card-body">
                     <div>

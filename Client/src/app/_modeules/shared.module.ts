@@ -4,6 +4,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { FileUploadModule } from 'ng2-file-upload';
+import { DatapickerComponent } from '../_form/datapicker/datapicker.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 
@@ -21,6 +24,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     NgxSpinnerModule.forRoot({
       type:'square-jelly-box'
 }),
+    FileUploadModule,
+    BsDatepickerModule.forRoot(),
 
   ],
 
@@ -28,7 +33,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     BsDropdownModule,
     ToastrModule,
     TabsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FileUploadModule,
+    BsDatepickerModule
   ]
 })
 export class SharedModule { }

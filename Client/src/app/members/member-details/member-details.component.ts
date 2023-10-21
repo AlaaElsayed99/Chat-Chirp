@@ -15,7 +15,6 @@ import { environment } from 'src/environments/environment';
   imports:[CommonModule,TabsModule,GalleryModule]
 })
 export class MemberDetailsComponent implements OnInit {
-  url="https://localhost:44362/"
    member: Member|undefined;
    images:GalleryItem[]=[];
   constructor(private memberService:MemberService, private route:ActivatedRoute) {
@@ -37,7 +36,7 @@ loadMember(){
 getImages(){
   if(!this.member) return;
   for(const photo of this.member?.photos){
-    this.images.push(new ImageItem({src:this.url+photo.url,thumb:this.url+photo.url}))
+    this.images.push(new ImageItem({src:photo.url,thumb:photo.url}))
   }
 }
 }

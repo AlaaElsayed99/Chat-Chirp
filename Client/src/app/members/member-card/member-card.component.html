@@ -1,6 +1,6 @@
 <div class="card" *ngIf="member">
     <div class="card-img-wrapper">
-        <img src="https://localhost:44362/{{member.photoUrl}}" alt="{{member.knownAs}}" class="card-img-top" style="height: 200px;">
+        <img src="{{member.photoUrl ||'assets/user.png'}}" alt="{{member.knownAs}}" class="card-img-top" style="height: 200px;">
         <ul class="list-inline member-icons animate text-center">
             <li class="list-inline-item">
                 <button routerLink="/members/{{member.userName}}" class="btn btn-outline-primary">
