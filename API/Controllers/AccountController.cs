@@ -70,6 +70,7 @@ namespace API.Controllers
                 token = _service.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(s=>s.IsMain)?.Url,
                 KnownAs = user.KnownAs,
+                Gender=user.Gender,
             });
         }
 

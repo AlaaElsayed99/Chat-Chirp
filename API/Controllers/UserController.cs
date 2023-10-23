@@ -7,6 +7,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     public class UserController : ControllerBase
     {
@@ -23,10 +24,18 @@ namespace API.Controllers
             _photoService = photoService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAsync()
+        public async Task<ActionResult<PageList<AppUserDTO>>> GetAsync([FromQuery]Userparams userparams)
         {
-            var Users = await _userRepository.GetAllUserAsync();
+            var CurrentUser=await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            userparams.CurrentUsername = CurrentUser.UserName;
+            if (string.IsNullOrEmpty(userparams.Gender))
+            {
+                userparams.Gender = CurrentUser.Gender == "Male" ? "Female" : "Male";
+            }
             
+            var Users = await _userRepository.GetAllUserAsync(userparams);
+            Response.AddPaginationHeader(new PaginationHeader(Users.CurrentPage,Users.PageSize,Users.TotalCount
+                ,Users.TotalPages)); 
             return Ok(Users);
 
             

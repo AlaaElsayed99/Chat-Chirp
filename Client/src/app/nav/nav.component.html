@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/" routerLinkActive="active"><img class=" logo" loading="lazy" width="60px" height="30px" src="assets/Logo.jpg" alt="logo"></a>
-    <a class="navbar-brand" href="/" routerLinkActive="active" style="font-family: Arial, Helvetica, sans-serif;">Chat Chirp</a>
+    <a class="navbar-brand" href="/" routerLinkActive="active" style="font-family: cursive;">Chat Chirp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -22,7 +22,7 @@
       </ul>
       <div dropdown class="dropdown" *ngIf="(accountService.currnetUser$ | async) as user" dropdown>
         <img class="userphoto me-3" src="{{user.photoUrl||'./assets/user.png'}}" alt="photo user">
-        <a dropdownToggle class="dropdown-toggle text-light text-decoration-none ms-1 ">Welcome {{user.username | titlecase}}</a>
+        <a dropdownToggle class="dropdown-toggle text-light text-decoration-none ms-1 ">Welcome {{user.knownAs}}</a>
         <div class="dropdown-menu" *dropdownMenu>
           <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
           <a class="dropdown-item" (click)="logOut()">LogOut</a>

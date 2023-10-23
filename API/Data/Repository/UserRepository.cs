@@ -14,10 +14,24 @@ namespace API.Data.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AppUserDTO>> GetAllUserAsync()
+        public async Task<PageList<AppUserDTO>> GetAllUserAsync(Userparams userparams)
         {
-            return await _context.AppUsers
-                .ProjectTo<AppUserDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            var query = _context.AppUsers.AsQueryable();
+            query = query.Where(U => U.UserName != userparams.CurrentUsername);
+            query = query.Where(U => U.Gender != userparams.Gender);
+
+            var minDob= DateOnly.FromDateTime(DateTime.Today.AddYears(-userparams.MaxAge-1));
+            var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userparams.MinAge));
+
+            query = query.Where(U => U.DateOfBirth >= minDob && U.DateOfBirth <= maxDob);
+            query = userparams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(i => i.Created),
+                _ => query.OrderByDescending(i => i.LastActive)
+            };
+            return await PageList<AppUserDTO>.CreateAsync
+                (query.AsNoTracking().ProjectTo<AppUserDTO>(_mapper.ConfigurationProvider)
+                , userparams.PageNumber, userparams.PageSize);
         }
 
         public async Task<AppUserDTO> GetMemberAsync(string name)

@@ -16,6 +16,8 @@ global using API.Services;
 global using Microsoft.AspNetCore.Authorization;
 global using API.Data.Repository;   
 global using AutoMapper;
+global using API.Helper;
+
 
 
 

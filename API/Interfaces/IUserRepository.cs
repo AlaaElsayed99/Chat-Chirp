@@ -1,4 +1,5 @@
-﻿namespace API.Interfaces
+﻿
+namespace API.Interfaces
 {
     public interface IUserRepository
     {
@@ -7,7 +8,7 @@
         Task<IEnumerable<AppUser>> GetUserAsync();
         Task <AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string name);
-        Task<IEnumerable<AppUserDTO>> GetAllUserAsync();
+        Task<PageList<AppUserDTO>> GetAllUserAsync(Userparams userparams);
         Task<AppUserDTO> GetMemberAsync(string name);
     }
 }

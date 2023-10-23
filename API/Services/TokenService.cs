@@ -19,11 +19,11 @@ namespace API.Services
 
         public string CreateToken(AppUser User)
         {
-           var claims=new List<Claim>();
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, User.UserName));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, User.Id.ToString()));
-            
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
+            var claims = new List<Claim> {
+            new Claim(JwtRegisteredClaimNames.NameId, User.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, User.UserName)
+        };
+        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
             JwtSecurityToken token = new JwtSecurityToken(
                            issuer: config["JWT:ValidIssuer"],/// The api location 
                            audience: config["JWT:ValidAduiance"],///The angular consumer

@@ -8,19 +8,19 @@ import { Member } from '../_models/member';
   styleUrls: ['./lists.component.css']
 })
 export class ListsComponent implements OnInit{
-  Members:Member[]=[];
+  members:Member[]=[];
   constructor(private memberSrvice:MemberService) {
     
   }
   ngOnInit(): void {
-   this.getMembers();
+  //  this.getMembers();
   }
-  getMembers(){
-    this.memberSrvice.getMembers().subscribe({
-    next:members=>this.Members=members,
-    error:err=>console.log(err),
+  // getMembers(){
+  //   this.memberSrvice.getMembers().subscribe({
+  //   next:members=>this.members=members,
+  //   error:err=>console.log(err),
   
-  })
+  // })
   }
 
-}
+
