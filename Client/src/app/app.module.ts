@@ -31,6 +31,7 @@ import { DatapickerComponent } from './_form/datapicker/datapicker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TimeagoModule } from 'ngx-timeago';
 
 
 @NgModule({
@@ -62,7 +63,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
