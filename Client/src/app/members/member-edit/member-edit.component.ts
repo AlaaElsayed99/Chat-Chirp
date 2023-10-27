@@ -19,8 +19,7 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue=true;
     }
   }
-  member:Member
-   |undefined
+  member:Member|undefined;
   user:User|null=null;
   constructor(private accountService:AccountService,private memberService:MemberService ,private toastr:ToastrService) {
    this.accountService.currnetUser$.pipe(take(1)).subscribe({
@@ -45,6 +44,8 @@ this.editForm?.reset(this.member);
   }
 })
 
+
 }
+
 
 }

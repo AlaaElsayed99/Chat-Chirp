@@ -12,7 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
-import { ListsComponent } from './lists/lists.component';
+import { ListsComponent } from './Likelists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { SharedModule } from './_modeules/shared.module';
@@ -32,6 +32,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 
 @NgModule({
@@ -50,7 +51,7 @@ import { TimeagoModule } from 'ngx-timeago';
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputComponent,
-    DatapickerComponent
+    DatapickerComponent,
   ],
   imports: [
     BrowserModule,

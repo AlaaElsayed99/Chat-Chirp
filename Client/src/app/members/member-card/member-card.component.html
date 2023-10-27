@@ -8,12 +8,15 @@
                 </button>
             </li>
             <li class="list-inline-item">
-                <button (click)="addLike(member)" class="btn btn-primary">
+                <button (click)="addLike(member)" class="btn btn-danger">
                     <i class="fa fa-heart"></i>
                 </button>
             </li>
             <li class="list-inline-item">
-                <button class="btn btn-info">
+                <button class="btn btn-info" 
+                routerLink="/members/{{member.userName}}"
+                [queryParams]="{tab: 'Messages'}"
+                >
                     <i class="fa fa-envelope"></i>
                 </button>
             </li>

@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
-import { ListsComponent } from './lists/lists.component';
+import { ListsComponent } from './Likelists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { authGuard } from './_guards/auth.guard';
 import { TestsErrorComponent } from './error/tests-error/tests-error.component';
@@ -12,6 +12,7 @@ import { NotFoundComponent } from './error/not-found/not-found.component';
 import { ServerErrorComponent } from './error/server-error/server-error.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { memberDetailsResolver } from './_Resolver/member-details.resolver';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -21,7 +22,7 @@ const routes: Routes = [
     canActivate:[authGuard],
     children:[
       {path:'members',component:MemberListComponent,},
-  {path:'members/:username',component:MemberDetailsComponent},
+  {path:'members/:username',component:MemberDetailsComponent, resolve:{member: memberDetailsResolver}},
   {path:'member/edit',component:MemberEditComponent,canDeactivate:[preventUnsavedChangesGuard]},
 
   {path:'lists',component:ListsComponent},

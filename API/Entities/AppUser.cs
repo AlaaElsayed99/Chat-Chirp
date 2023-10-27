@@ -23,7 +23,8 @@ namespace API.Entities
         public List<UserLikes>? LikedByUsers  { get; set; }
         public List<UserLikes>? LikedUsers { get; set; }
 
-
+        public List<Message>? MessagesSent { get; set; }
+        public List<Message>? MessagesReceived { get; set; }
         //public int GetAge() => DateOfBirth.CalculateAge();
 
 
