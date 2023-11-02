@@ -1,1 +1,1 @@
-# API
+# API  Our Global Talking App is a modern and innovative platform that connects people from all corners of the world, fostering meaningful connections and relationships. Built using cutting-edge technologies, including API integration, Angular frontend, SignalR for real-time communication, and the Unit of Work pattern for seamless data management, our dating app promises a unique and immersive experience.
