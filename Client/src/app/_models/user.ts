@@ -4,4 +4,5 @@ export interface User{
     token:string;
     gender:string;
     knownAs:string;
+    roleUrl:string;
 }

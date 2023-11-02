@@ -55,7 +55,9 @@ namespace API
             builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddScoped<ILikesRepository, LikesRepository>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-
+           
+            builder.Services.AddIdentityCore<AppUser>().AddRoles<AppRole>()
+                .AddRoleManager<RoleManager<AppRole>>().AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddScoped<LogUserActivity>();
             builder.Services.AddAutoMapper(typeof(Program));
@@ -90,6 +92,14 @@ namespace API
                    
                 };
             });
+
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin","Moderator"));
+
+
+            });
             var app = builder.Build();
             if (builder.Environment.IsDevelopment())
             { 
@@ -118,8 +128,11 @@ namespace API
             var Logger = Services.GetRequiredService<ILogger<Program>>();
             try
             {
+                var userManger = Services.GetRequiredService<UserManager<AppUser>>();
+                var roleManger = Services.GetRequiredService<RoleManager<AppRole>>();
+
                 await context.Database.MigrateAsync();
-                await Seed.SeedUsers(context);
+                await Seed.SeedUsers(userManger,roleManger);
             }
             catch (Exception ex)
             {

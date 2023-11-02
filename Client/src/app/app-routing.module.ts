@@ -22,11 +22,11 @@ const routes: Routes = [
     canActivate:[authGuard],
     children:[
       {path:'members',component:MemberListComponent,},
-  {path:'members/:username',component:MemberDetailsComponent, resolve:{member: memberDetailsResolver}},
-  {path:'member/edit',component:MemberEditComponent,canDeactivate:[preventUnsavedChangesGuard]},
-
-  {path:'lists',component:ListsComponent},
-  {path:'messages',component:MessagesComponent},
+      {path:'members/:username',component:MemberDetailsComponent, resolve:{member: memberDetailsResolver}},
+      {path:'member/edit',component:MemberEditComponent,canDeactivate:[preventUnsavedChangesGuard]},
+      {path:'lists',component:ListsComponent},
+      {path:'messages',component:MessagesComponent},  
+      {path:'**', component:NotFoundComponent}
     ]},
   {path:'error',component:TestsErrorComponent},
   {path:'not-found',component:NotFoundComponent},

@@ -1,8 +1,11 @@
 ﻿
 
+
+
 namespace API.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext: IdentityDbContext<AppUser,AppRole,int,IdentityUserClaim<int>
+        , AppUserRole,IdentityUserLogin<int>, IdentityRoleClaim<int> , IdentityUserToken<int>>
     {
         public AppDbContext(DbContextOptions options):base(options) 
         {
@@ -11,7 +14,14 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserLikes>().HasKey(k => new { k.SourceUserId, k.TargerUserId });
-            
+
+            modelBuilder.Entity<AppUser>().HasMany(s => s.UserRoles)
+                .WithOne(u => u.User).HasForeignKey(s => s.UserId)
+                .IsRequired();
+            modelBuilder.Entity<AppRole>().HasMany(s => s.UserRoles)
+                .WithOne(u => u.Role).HasForeignKey(s => s.RoleId)
+                .IsRequired();
+
             modelBuilder.Entity<UserLikes>().HasOne(s => s.SourceUser)
                 .WithMany(s => s.LikedUsers)
                 .HasForeignKey(s=>s.SourceUserId)

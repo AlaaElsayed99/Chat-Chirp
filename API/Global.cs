@@ -17,6 +17,10 @@ global using Microsoft.AspNetCore.Authorization;
 global using API.Data.Repository;   
 global using AutoMapper;
 global using API.Helper;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+
 
 
 

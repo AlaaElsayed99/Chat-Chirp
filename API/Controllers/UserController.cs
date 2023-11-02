@@ -23,6 +23,7 @@ namespace API.Controllers
             _mapper = mapper;
             _photoService = photoService;
         }
+
         [HttpGet]
         public async Task<ActionResult<PageList<AppUserDTO>>> GetAsync([FromQuery]Userparams userparams)
         {
@@ -45,7 +46,7 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUserDTO>> GetByIdAsync(int id)
         //{
         //    var User = await _userRepository.GetUserByIdAsync(id);
-           
+
         //    if (User == null)
         //    {
         //        return NotFound();
@@ -53,10 +54,13 @@ namespace API.Controllers
         //    var data = _mapper.Map<IEnumerable<AppUserDTO>>(User);
         //    return Ok(data);
         //}
-        [HttpGet("{name}")]
-        public async Task<ActionResult<AppUserDTO>> GetByUsernameAsync(string name)
+
+        
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<AppUserDTO>> GetByUsernameAsync(string username)
         {
-            var User = await _userRepository.GetMemberAsync(name);
+            var User = await _userRepository.GetMemberAsync(username);
 
             if (User == null)
             {
