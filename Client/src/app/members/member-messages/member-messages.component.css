@@ -16,3 +16,17 @@
     max-height: 50px;
     
 }
+.sender-username {
+    /* Styles for sender's username */
+    font-weight: bold;
+    color: #336699; /* Change the color as needed */
+    /* Add any other styles for the sender's username */
+}
+
+.receiver-username {
+    /* Styles for receiver's username */
+    font-weight: bold;
+    color: #ff0000; /* Change the color as needed */
+    /* Add any other styles for the receiver's username */
+}
+

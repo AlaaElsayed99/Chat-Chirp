@@ -21,6 +21,7 @@
     "@angular/router": "^16.2.0",
     "@cloudinary/ng": "^2.0.0",
     "@cloudinary/url-gen": "^1.11.2",
+    "@microsoft/signalr": "^7.0.12",
     "bootstrap": "^5.2.3",
     "bootswatch": "^5.3.2",
     "font-awesome": "^4.7.0",

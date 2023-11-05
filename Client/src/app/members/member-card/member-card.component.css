@@ -1,32 +1,82 @@
-.card:hover img{
-    transform: scale(1.1,1.1);
-    transition-duration: 500ms;
-    transition-timing-function: ease-out;
-    opacity: 0.8;
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.card img{
-    transform: scale(1.0,1.0);
-    transition-duration: 500ms;
-    transition-timing-function: ease-out;
+
+.card {
+  width: 400px; /* Adjust the width as needed */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
-.card-img-wrapper{
-    overflow: hidden;
+
+/* rest of the CSS remains the same */
+
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-img-wrapper {
     position: relative;
-    
-}
-.member-icons{
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s;
+  }
+  
+  .card:hover .card-img-top {
+    opacity: 0.8; /* Adjust the opacity value as needed */
+  }
+  
+  .member-icons {
+    display: flex;
+    justify-content: center;
     position: absolute;
-    bottom: -30%;
+    bottom: 10px; /* Adjust the distance from the bottom as needed */
     left: 0;
     right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     opacity: 0;
-}
-.card-img-wrapper:hover .member-icons{
-    bottom: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .card:hover .member-icons {
     opacity: 1;
-}
-.animate{
-    transition: all 0.3s ease-in-out;
-}
+  }
+  
+  .member-icons button {
+    margin: 5px;
+  }
+  
+  .member-icons button:hover {
+    opacity: 1;
+  }
+  
+  .card-title {
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+  
+  .is-online {
+    color: rgb(13, 196, 13);
+  }
+  
+  .card-text {
+    margin-bottom: 5px;
+  }
+  
+  .animate button {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .animate button:hover {
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  

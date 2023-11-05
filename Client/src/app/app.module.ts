@@ -31,6 +31,8 @@ import { DatapickerComponent } from './_form/datapicker/datapicker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteStratege } from './_services/customRouteReuseStrategy';
 
 
 @NgModule({
@@ -68,6 +70,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     {provide: HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
     {provide: HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
     {provide: HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true},
+    {provide: RouteReuseStrategy,useClass:CustomRouteStratege},
 
 
     provideToastr({

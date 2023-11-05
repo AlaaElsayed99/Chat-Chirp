@@ -2,6 +2,7 @@
 using API.Data.SeedData;
 using API.Helper;
 using API.Middleware;
+using API.SignalR;
 
 namespace API
 {
@@ -49,12 +50,25 @@ namespace API
                 // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 // c.IncludeXmlComments(xmlPath);
             });
-            builder.Services.AddCors();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:4200")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowCredentials();
+                    });
+            });
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddScoped<ILikesRepository, LikesRepository>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddSignalR();
+            builder.Services.AddSingleton<PresenceTracker>();
+
            
             builder.Services.AddIdentityCore<AppUser>().AddRoles<AppRole>()
                 .AddRoleManager<RoleManager<AppRole>>().AddEntityFrameworkStores<AppDbContext>();
@@ -78,7 +92,6 @@ namespace API
                 option.RequireHttpsMetadata = false; // make true if you need Https
                 option.TokenValidationParameters = new TokenValidationParameters()
                 {
-
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
@@ -86,11 +99,20 @@ namespace API
                     ValidAudience= builder.Configuration["JWT:ValidAduiance"],
                     IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
-                    
-                    
-                    
-                   
+                };option.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if(!string.IsNullOrEmpty(accessToken)&& path.StartsWithSegments("/hubs"))
+                        {
+                            context.Token=accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
+
             });
 
             builder.Services.AddAuthorization(opt =>
@@ -115,13 +137,13 @@ namespace API
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors("AllowSpecificOrigins");
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
+            app.MapHub<PresenceHub>("hubs/presence");
+            app.MapHub<MessageHub>("hubs/message");
             using var scope = app.Services.CreateScope();
             var Services = scope.ServiceProvider;
             var context = Services.GetRequiredService<AppDbContext>();
@@ -132,6 +154,8 @@ namespace API
                 var roleManger = Services.GetRequiredService<RoleManager<AppRole>>();
 
                 await context.Database.MigrateAsync();
+
+                await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]");
                 await Seed.SeedUsers(userManger,roleManger);
             }
             catch (Exception ex)

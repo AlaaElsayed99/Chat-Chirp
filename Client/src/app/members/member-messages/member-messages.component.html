@@ -1,22 +1,27 @@
 <div class="card">
     <div class="card-body">
-        <div *ngIf="messages.length===0"> <h3>No Messages yet... Say hi to everyone</h3></div>
-        <ul *ngIf="messages.length>0" class="chat">
-            <li *ngFor="let message of messages">
+        <div *ngIf="(messageService.messageThread$ | async)?.length===0"> <h3>No Messages yet... Say hi to everyone</h3></div>
+        <ul *ngIf="(messageService.messageThread$ | async)!.length>0" class="chat">
+            <li *ngFor="let message of (messageService.messageThread$ | async)">
                 <div>
+                    <span *ngIf="message.senderUsername" [ngClass]="{'sender-username': message.senderUsername !== userName, 'receiver-username': message.senderUsername === userName}">
+                        {{message.senderUsername | uppercase}}
+                    </span>
+                    <small class="text-muted">
+                        <span class="fa fa-clock-o">{{message.messageSent|timeago}}</span>
+                        <span class="text-danger" *ngIf="!message.dateRead&&message.senderUsername!==userName">
+                            (unread)</span>
+                        <span class="text-success" *ngIf="message.dateRead&&message.senderUsername!==userName">
+                            (read {{message.dateRead|timeago}})</span>
+                    </small>
+                    
+                    
                     <span class="chat-img float-end">
                         <img src="{{message.senderPhotoUrl|| './assets/user.png'}}" alt="img of user" class="rounded-circle">
+                        
                     </span>
                     <div class="chat-body">
-                        <div class="header">
-                            <small class="text-muted">
-                                <span class="fa fa-clock-o">{{message.messageSent + 'Z'|timeago}}</span>
-                                <span class="text-danger" *ngIf="!message.dateRead&&message.senderUsername!==userName">
-                                    (unread)</span>
-                                <span class="text-success" *ngIf="message.dateRead&&message.senderUsername!==userName">
-                                    (read {{message.dateRead + 'Z'|timeago}})</span>
-                            </small>
-                        </div>
+                        
                         <p>{{message.content}}</p>
                     </div>
                 </div>
